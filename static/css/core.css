@@ -1,0 +1,75 @@
+
+/* Base Container */
+.container {
+	position: relative;
+	width: 100%;
+	max-width: 960px;
+	margin: 0 auto;
+	padding: 0;
+	
+}
+
+/* Row */
+
+.row:before,
+.row:after {
+	content:"";
+	display: table;
+	clear: both;
+}
+
+
+
+.column,
+.columns {
+	width: 100%;
+	float: left;
+	box-sizing: border-box; 
+}
+
+.one.column,
+.one.columns       { width: 6.25%;}
+.two.columns       { width: 12.5%;}
+.three.columns   { width: 18.75%;}
+.four.columns      { width: 25%;}
+.five.columns      { width: 31.25%;}
+.six.columns         { width: 37.5%;}
+.seven.columns     { width: 43.75%; }
+.eight.columns     { width: 50%; }
+.nine.columns        { width: 56.25%; }
+.ten.columns           { width: 62.5%; }
+.eleven.columns    { width: 68.75%; }
+.twelve.columns     { width: 75%; }
+.thirteen.columns { width: 81.25%; }
+.fourteen.columns { width: 87.5%; }
+.fifteen.columns   { width: 93.75%; }
+.sixteen.columns   { width: 100%; }
+
+
+
+
+/* Base Styles
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+/* NOTE
+html is set to 62.5% so that all the REM measurements throughout Skeleton
+are based on 10px sizing. So basically 1.5rem = 15px :) */
+html {
+  font-size: 62.5%; }
+body {
+  font-size: 1.5em; /* currently ems cause chrome bug misinterpreting rems on body element */
+  line-height: 1.6;
+  font-weight: 400;
+  font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #222; }
+
+/* Links
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+a {
+  color: #1EAEDB; }
+a:hover {
+  color: #0FA0CE; }
+
+
+
+
+

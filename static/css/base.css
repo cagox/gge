@@ -1,0 +1,48 @@
+
+
+body {
+  /*background: url('../images/cube-844235_1920.jpg');*/
+  /* background: #000000; */
+  background-color: #737769;
+  /*color: #85f762;*/
+  color: #000000;
+  font-family: "Lucida Sans Unicode";
+	font-size: medium;
+}
+
+/*header_row will be used for headers and footers.*/
+.header_row {
+  background-color: #7aaf90;
+}
+
+.container a:link,
+.header_row a:link {
+  color: darkblue;
+}
+
+.container a:visited,
+.header_row a:visited {
+  color: darkblue;
+}
+
+.container a:hover,
+.header_row a:hover {
+  color: darkblue;
+}
+
+.container a:active,
+.header_row a:active {
+  color: darkblue;
+}
+
+.header_bottom {
+  border-bottom: 2px solid black;
+}
+
+.footer_top {
+  border-top: 2px solid black;
+}
+
+.container {
+  background-color: #9bf9d0;
+}

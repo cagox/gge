@@ -1,0 +1,40 @@
+{{define "title"}}Please Log In{{end}}
+
+{{define "header"}}
+<div class="row header_row">
+  <div class="sixteen columns">
+    &nbsp;
+  </div>
+</div>
+<div class="row header_row">
+  <div class="sixteen columns">
+    &nbsp;
+  </div>
+</div>
+<div class="row header_row header_bottom">
+  <div class="sixteen columns">
+    &nbsp;
+  </div>
+</div>
+
+{{end}}
+
+
+
+
+{{define "content"}}
+<div class="row header_row header_bottom">
+  {{ block "login" .}}
+  <div class="six columns">
+    &nbsp;
+  </div>
+  <div class="ten columns">
+    <form action="/login" method="POST">
+      Email: <input type="email" name="email">
+      Password: <input type="password" name="password">
+      <input type="submit" value="login">
+    </form>
+  </div>
+  {{end}}
+</div>
+{{end}}

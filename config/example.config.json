@@ -1,0 +1,11 @@
+{
+	"databasePath"      : "/home/USER/.gge/gge.db",
+	"StaticPath"        :   "/home/USER/go/src/github.com/cagox/gge/static",
+	"DatabaseType"      : "sqlite3",
+	"TemplateRoot"      : "/home/USER/go/src/github.com/cagox/gge/templates",
+	"InviteOnly"        : true,
+	"AdminToken"		  	: "",
+	"MinimumNameLength" : 3,
+	"MinPasswordLength" : 8,
+	"SessionKey"        : ""
+}

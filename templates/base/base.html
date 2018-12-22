@@ -1,0 +1,98 @@
+<html>
+        <head>
+                <title>{{block "title" .}}No Title Set{{end}}</title>
+                {{ block "base_css" .}}
+                  <link rel="stylesheet" type="text/css" href="/static/css/normalize.css"  />
+                  <link rel="stylesheet" type="text/css" href="/static/css/core.css"  />
+                  <link rel="stylesheet" type="text/css" href="/static/css/base.css"  />
+                {{end}}
+                {{ block "css" .}} {{end}}
+                {{ block "scripts" .}} {{end}}
+        </head>
+        <body>
+          <div class="container">
+          {{ block "header" .}}
+          <div class="row header_row">
+            {{ block "loginform" . }}
+              {{ if .Authenticated }}
+                <div class="sixteen columns"> &nbsp; </div>
+              {{else}}
+                <div class="six columns">
+                  &nbsp;
+                </div>
+                <div class="ten columns">
+                  <form action="/login" method="POST">
+                    Email: <input type="email" name="email">
+                    Password: <input type="password" name="password">
+                    <input type="submit" value="login">
+                  </form>
+                </div>
+              {{end}}
+
+              {{end}} <!--end loginform -->
+          </div>
+
+            <div class="row header_row"><!-- Not sure yet -->
+              <div class="sixteen columns">
+                &nbsp;X
+              </div>
+            </div>
+            <div class="row header_row header_bottom"><!-- Not sure yet -->
+              <div class="sixteen columns">
+                &nbsp;Y
+              </div>
+            </div>
+          {{end}}<!-- End Header Block-->
+
+          {{ block "content" .}}
+          <div class="row">
+            &nbsp;
+          </div>
+          <div class="row">
+            &nbsp;
+          </div>
+          <div class="row">
+            &nbsp;
+          </div>
+          <div class="row">
+            &nbsp;
+          </div>
+          {{end}}<!-- end Content Block -->
+
+          {{ block "footer" .}}
+          <div class="row header_row footer_top">
+            <div class="twelve columns">
+              &nbsp;
+            </div>
+            <div class="four columns">
+              Created by <a href="http://www.cagox.net/" target="_blank">Cagox</a>
+            </div>
+          </div>
+          <div class="row header_row">
+            <div class="twelve columns">
+              &nbsp;
+            </div>
+            <div class="four columns">
+              Powered By <a href="https://golang.org/" target="_blank">Go!</a>
+            </div>
+          </div>
+          <div class="row header_row">
+            <div class="twelve columns">
+              &nbsp;
+            </div>
+            <div class="four columns">
+              <a href="https://github.com/cagox/gge" target="_blank">Get The Source</a>
+            </div>
+          </div>
+
+
+
+          </div><!-- close container -->
+          {{end}}
+
+
+
+
+
+        </body>
+</html>

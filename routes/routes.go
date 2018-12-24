@@ -24,4 +24,5 @@ func setupMainRoutes() {
   http.Handle("/static/", http.StripPrefix("/static/",http.FileServer(http.Dir(config.Config.StaticPath))))
   http.HandleFunc("/", indexHandler)
   http.HandleFunc("/login", loginHandler)
+  http.HandleFunc("/logout", logoutHandler)
 }

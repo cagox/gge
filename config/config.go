@@ -24,8 +24,8 @@ type GodGameConfiguration struct {
   AdminToken        string
   MinimumNameLength int
   MinPasswordLength int
-  EncKey            []byte
-  AuthKey           []byte
+  EncKey            string
+  AuthKey           string
 
   Database      *gorm.DB  //Not in the Config File.
 }

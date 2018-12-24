@@ -15,7 +15,8 @@
           <div class="row header_row">
             {{ block "loginform" . }}
               {{ if .Authenticated }}
-                <div class="sixteen columns"> &nbsp; </div>
+                <div class="fifteen columns"> &nbsp; </div>
+                <div class="one columns"> <a href="/logout">Logout</a> </div>
               {{else}}
                 <div class="six columns">
                   &nbsp;

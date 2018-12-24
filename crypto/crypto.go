@@ -19,5 +19,10 @@ func HashPassword(password string) string {
 
 //ComparePassword tells us if the password matches
 func ComparePassword(password string, databaseHash string) bool {
-  return databaseHash == string(HashPassword(password))
+  err := bcrypt.CompareHashAndPassword([]byte(databaseHash), []byte(password))
+  if err != nil {
+    //fmt.Println(err.Error())
+    return false
+  }
+  return true
 }

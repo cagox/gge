@@ -46,3 +46,8 @@ body {
 .container {
   background-color: #9bf9d0;
 }
+
+.login-input {
+  width: 12em;
+  font-size: 0.9em;
+}

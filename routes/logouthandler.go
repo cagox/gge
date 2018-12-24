@@ -2,21 +2,20 @@ package routes
 
 import (
   "net/http"
-  //"github.com/gorilla/sessions"
+  "fmt"
 
   "github.com/cagox/gge/ggsession"
 )
 
 func logoutHandler(w http.ResponseWriter, r *http.Request) {
-  session, err := ggsession.Store.Get(r, "gge-cookie")
-  if err != nil {
-    http.Error(w, err.Error(), http.StatusInternalServerError)
-    return
-  }
+  session := ggsession.GetSession(w,r)
+  sessionData := ggsession.GetSessionData(session)
+  fmt.Println("Logout Handler Flashes: ", sessionData.Flashes)
 
-  pageData := ggsession.ZeroPageData()
-  session.Values["pagedata"] = pageData
-
+  session.Values["sessiondata"] = ggsession.NewSessionData()
+  sessionData.AddFlash("message", "Successfully logged out.")
+  sessionData.Authenticated = false
+  session.Values["sessiondata"] = sessionData
   session.Save(r, w)
   http.Redirect(w, r, "/", http.StatusSeeOther)
 }

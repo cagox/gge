@@ -1,0 +1,123 @@
+{{ define "title"}}Create First User {{end}}
+
+{{ define "header" }}
+  <div class="row header_row"><div class="sixteen columns">&nbsp;</div></div>
+  <div class="row header_row">
+    <div class="five columns">&nbsp;</div>
+    <div class="six columns"><center><h2>Create First Admin User</h2></center></div>
+    <div class="five columns">&nbsp;</div>
+  </div>
+  <div class="row header_row"><div class="sixteen columns">&nbsp;</div></div>
+{{end}}
+
+
+{{define "content"}}
+  {{if .IsTokenSet}}
+      <div class="row"><div class="sixteen columns">&nbsp;</div></div>
+      <div class="row">
+        <div class="four columns">&nbsp;</div>
+        <div class="eight columns">
+          Welcome! Since the database is empty, you have been redirected here to create the first user.
+          This user will have administrative privileges.  If you are supposed to be here, then you will
+          know what the Admin Token is.
+        </div>
+        <div class="row"><div class="four columns">&nbsp;</div></div>
+      </div>
+      <form method="post" action="/admin/firstuser">
+
+      <div class="row">
+        <div class="four columns">&nbsp;</div>
+          <div class="two columns">Email Address:</div><div class="four columns">
+            <input name="email" type="email" value="{{.Email}}" /></div>
+          <div class="six columns"> &nbsp; </div>
+      </div>
+      <div class="row">
+        <div class="four columns">&nbsp;</div>
+          <div class="two columns">Display Name:</div><div class="four columns">
+            <input name="name" type="text" value="{{.Name}}"/></div>
+          <div class="six columns"> &nbsp; </div>
+      </div>
+      <div class="row">
+        <div class="four columns">&nbsp;</div>
+          <div class="two columns">Password:</div><div class="four columns">
+            <input name="password" type="text" /></div>
+          <div class="six columns"> &nbsp; </div>
+      </div>
+      <!-- <div class="row">
+        <div class="four columns">&nbsp;</div>
+          <div class="two columns">Repeat Password:</div>
+          <div class="four columns"><input name="password2" type="password" /></div>
+          <div class="six columns"> &nbsp; </div>
+      </div> --> <!-- TODO: Learn enough JS to implement clientside verification that password 1 and 2 match.-->
+      <div class="row">
+        <div class="four columns">&nbsp;</div>
+          <div class="two columns">Admin Token:</div>
+          <div class="four columns"><input name="admintoken" type="text" /></div>
+          <div class="six columns"> &nbsp; </div>
+      </div>
+      <div class="row">
+        <div class="seven columns"> &nbsp; </div>
+        <div class="three columns" style="padding-left: 2em;">
+          <input type="submit" value="Create Admin"/>
+        </div>
+        <div class="six columns"> &nbsp; </div>
+      </div>
+      </form>
+  {{else}}
+      <div class="row"><div class="sixteen columns">&nbsp;</div></div>
+      <div class="row"><div class="sixteen columns">&nbsp;</div></div>
+      <div class="row">
+        <div class="four columns">&nbsp;</div>
+        <div class="eight columns">
+          If you are seeing this then there is a problem with your configuration.
+        </div>
+        <div class="four columns">&nbsp;</div>
+      </div>
+      <div class="row"><div class="sixteen columns">&nbsp;</div></div>
+      <div class="row">
+        <div class="four columns">&nbsp;</div>
+        <div class="eight columns">
+          You are here because there are no users in the database and the system assumes you want to create a new
+          administrative user. The problem is that there is no AdminToken set.  This token serves the purpose of
+          letting us know that you actually are the administrator and not just some random person who happened
+          to jump the gun and log in early.
+        </div>
+        <div class="four columns">&nbsp;</div>
+      </div>
+      <div class="row"><div class="sixteen columns">&nbsp;</div></div>
+      <div class="row">
+        <div class="four columns">&nbsp;</div>
+        <div class="eight columns">
+          The first step is to make sure that you either have the $GGEROOT environment variable set. If you know
+          how to do this, great. If not, don't worry. The hard coded default value is '/home/USER/config/gge', where USER
+          is the name of the user who owns the process. This should be a reasonable default for most users. If not, google
+          around a bit to find the instructions for either setting an env variable, or passing one to the process at startup time.
+        </div>
+        <div class="four columns">&nbsp;</div>
+      </div>
+      <div class="row"><div class="sixteen columns">&nbsp;</div></div>
+      <div class="row">
+        <div class="four columns">&nbsp;</div>
+        <div class="eight columns">
+          The file gge.json should be sitting in the directory indicated by $GGEROOT. Reference
+          <a href="https://github.com/burlingk/gge/blob/master/config/example.config.json" taget="_blank">config/example.config.json</a>
+          to see what the file should look like. AdminToken should be set to a string value. This is the valye that you will
+          give the form to create your new admin user.  Once the administrative user is created, it is advisable to reset the value
+          of AdminToken to an empty string ("") in the gge.json file. It will only ever be checked when accessing this page.
+        </div>
+        <div class="four columns">&nbsp;</div>
+      </div>
+      <div class="row"><div class="sixteen columns">&nbsp;</div></div>
+      <div class="row">
+        <div class="four columns">&nbsp;</div>
+        <div class="eight columns">
+          Remember, you will need to restart the GGE process for this change to register. The configuration file is only loaded
+          when the process first starts. Once you make the needed corrections and restart the program you may refresh this page.
+        </div>
+        <div class="four columns">&nbsp;</div>
+      </div>
+      <div class="row"><div class="sixteen columns">&nbsp;</div></div>
+      <div class="row"><div class="sixteen columns">&nbsp;</div></div>
+  {{end}}
+
+{{end}}

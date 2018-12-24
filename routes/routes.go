@@ -25,4 +25,5 @@ func setupMainRoutes() {
   http.HandleFunc("/", indexHandler)
   http.HandleFunc("/login", loginHandler)
   http.HandleFunc("/logout", logoutHandler)
+  http.HandleFunc("/admin/firstuser", firstUserHandle)
 }

@@ -25,18 +25,17 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
   }
 
   if (r.Method == "POST") {
-    fmt.Println("Parsing Loging Form")
-    fmt.Println("Email: "+r.FormValue("email"))
-    fmt.Println("Password: "+r.FormValue("password"))
 
     r.ParseForm()
     newUser := user.GetUserByEmail(r.FormValue("email"))
-    fmt.Println("Tried to get User: ", newUser)
     if (newUser.Authenticate(r.FormValue("password"))) {
       sessionData.AddFlash("message", "We are logging you in!")
+      fmt.Println("Flashes after Add(login):", sessionData.Flashes)
       sessionData.Authenticated = true
       sessionData.UserID = newUser.ID
       session.Values["sessiondata"] = sessionData
+      fmt.Println("Sessin before Redirect (login): ", session)
+      fmt.Println("SessinData before Redirect (login): ", sessionData)
       session.Save(r,w)
     } else {
       sessionData.Authenticated = false
@@ -45,6 +44,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
       session.Save(r,w)
     }
   }
+
   http.Redirect(w, r, "/", http.StatusSeeOther)
 
 }

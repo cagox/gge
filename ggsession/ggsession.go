@@ -2,7 +2,7 @@ package ggsession
 import (
   "encoding/gob"
   "net/http"
-  "fmt"
+  //"fmt"
 
   "github.com/gorilla/sessions"
   "github.com/cagox/gge/config"
@@ -28,6 +28,8 @@ func init() {
 
   //Register necessary structs.
   gob.Register(SessionData{})
+  gob.Register(Flash{})
+  gob.Register(BasePageData{})
 
 }
 
@@ -50,8 +52,9 @@ type Flash struct {
 
 //BasePageData is the data that most pages will need. This can be used to build the data struct for templates.
 type BasePageData struct {
-  Page  string
-  //More to Come as this thing takes form.
+  Page          string
+  Flashes       []Flash
+  Authenticated bool
 }
 
 
@@ -85,21 +88,29 @@ func GetSession(w http.ResponseWriter, r *http.Request) *sessions.Session {
   }
   if (session == nil) {
     session.Values["sessiondata"] = SessionData{UserID: 0, Authenticated: false}
-    fmt.Println("Session was nil, now it is: ",session)
     return session
   }
   return session
 }
 
 //AddFlash wraps session.AddFlash() to more easily add flashes using the Flash struct.
-func AddFlash(w http.ResponseWriter, r *http.Request, session *sessions.Session, class string, message string) {
-  flash := Flash{Class: class, Message: message}
-  session.AddFlash(flash)
-  session.Save(r,w)
-}
+//func AddFlash(w http.ResponseWriter, r *http.Request, session *sessions.Session, class string, message string) {
+//  flash := Flash{Class: class, Message: message}
+//  session.AddFlash(flash)
+//  session.Save(r,w)
+//}
 
 //AddFlash adds a flash message to the SessionData object
-func (sessionData SessionData) AddFlash(class string, message string){
+func (sessionData *SessionData) AddFlash(class string, message string){
   flash := Flash{Class: class, Message: message}
   sessionData.Flashes = append(sessionData.Flashes, flash)
+}
+
+//GetFlashes will add the flash messages from the SessionData struct t the PageData struct.
+func (sessionData *SessionData) GetFlashes(clearData bool) []Flash {
+  flashes := sessionData.Flashes
+  if clearData {
+    sessionData.Flashes = make([]Flash, 0)
+  }
+  return flashes
 }

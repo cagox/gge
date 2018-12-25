@@ -33,10 +33,21 @@
               {{end}} <!--end loginform -->
           </div>
 
-            <div class="row header_row"><!-- Not sure yet -->
-              <div class="sixteen columns">
-                &nbsp;
-              </div>
+            <div class="row header_row">
+              {{ if .Flashes}}
+                <div class="four columns">&nbsp;</div>
+                <div class="eight columns">
+                  <ul>
+                    {{range .Flashes}}
+                      <li class="{{.Class}}">{{.Class}}: &nbsp; {{.Message}}</li>
+                    {{end}}
+                  </ul>
+                </div>
+                <div class="four columns">&nbsp;</div>
+
+              {{else}}
+                <div class="sixteen columns"> &nbsp; </div>
+              {{end}}
             </div>
             <div class="row header_row header_bottom"><!-- Not sure yet -->
               <div class="sixteen columns">

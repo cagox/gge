@@ -21,7 +21,12 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 
   session := ggsession.GetSession(w, r)
   sessionData := ggsession.GetSessionData(session)
-  fmt.Println("Index Handler Flashes: ", sessionData.Flashes)
+  pageData := ggsession.BasePageData{Page: "Index"}
+  pageData.Flashes = sessionData.GetFlashes(true)
+  pageData.Authenticated = sessionData.Authenticated
+
+
+  fmt.Println("Index Handler Flashes: ", pageData.Flashes)
 
 
   t := template.New("base.html")
@@ -30,7 +35,8 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
     fmt.Println(err.Error())
   }
 
+  session.Values["sessiondata"] = sessionData
   session.Save(r,w)
-  t.Execute(w, sessionData)
+  fmt.Println(t.Execute(w, pageData))
   return
 }

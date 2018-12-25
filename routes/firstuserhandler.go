@@ -99,7 +99,8 @@ func firstUserHandle(w http.ResponseWriter, r *http.Request) {
   fmt.Println(config.Config.Database.Create(&profile))
   fmt.Println("Created User: ", createdUser)
 
-  ggsession.AddFlash(w, r, session, "message", "User Successfully Created")
+  sessionData.AddFlash("message", "User Successfully Created")
+  session.Values["sessiondata"] = sessionData
   session.Save(r,w)
   http.Redirect(w, r, "/", http.StatusSeeOther)
   return

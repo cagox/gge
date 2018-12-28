@@ -12,6 +12,7 @@ import (
 )
 
 type firstAdminData struct {
+  ggsession.BasePageData
   IsTokenSet bool
   Email      string
   Name       string
@@ -19,8 +20,16 @@ type firstAdminData struct {
 
 
 func firstUserHandle(w http.ResponseWriter, r *http.Request) {
-  session := ggsession.GetSession(w,r)
+  session := ggsession.GetSession(w, r)
   sessionData := ggsession.GetSessionData(session)
+  pageData := firstAdminData{}
+  pageData.Page="FirstUser"
+  pageData.Flashes = sessionData.GetFlashes(true)
+  pageData.Authenticated = sessionData.Authenticated
+  session.Save(r,w)
+
+
+
 
 
   //Make sure the database is actually empty and that they didn't come to this page on accident.
@@ -40,7 +49,6 @@ func firstUserHandle(w http.ResponseWriter, r *http.Request) {
     http.Error(w, err.Error(), http.StatusInternalServerError)
   }
 
-  pageData := firstAdminData{}
   if config.Config.AdminToken != "" {
     pageData.IsTokenSet = true
   }

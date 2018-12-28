@@ -75,46 +75,7 @@ func (user *User) Authenticate(password string) bool {
   return crypto.ComparePassword(password, user.Password)
 }
 
-//ValidatePassword validates the offered user password.
-func ValidatePassword(password string) []string {
-  errors := make([]string, 0)
-  if (len(password) < config.Config.MinPasswordLength) {
-    errors = append(errors, "The password must be at least "+ string(config.Config.MinPasswordLength)+" characters.")
-  }
-  return errors
-}
 
-/*
-ValidateUserForm validates the data provided and returns a slice of strings if there are any errors.
-Its first argument is a filled in UserForm struct. This is the data to be validated/
-Its second argument is a bool value declaring if the form is for a new user rather than just updating a user.
-*/
-func ValidateUserForm(newUser UserForm, isNew bool) []string {
-  errors := make([]string, 0)
-  var users []User
-  //Validate Password:
-  passwordErrors := ValidatePassword(newUser.Password)
-  if passwordErrors != nil {
-    for err := range passwordErrors {
-      errors = append(errors, passwordErrors[err])
-    }
-  }
-
-  //Validate Email Address:
-  if isNew {
-    config.Config.Database.Where("email = ?", newUser.Email).Find(&users)
-    if (len(users) != 0) {
-      errors = append(errors, "The email address "+newUser.Email+" already exists.")
-    }
-  }
-
-  //Validate Display name
-  if len(newUser.Name) < config.Config.MinimumNameLength {
-    errors = append(errors, "The Display Name must be at least "+string(config.Config.MinimumNameLength)+"characters long.")
-  }
-
-  return errors
-}
 
 //CreateUserFromForm creates a new user object from the data provided via a UserForm object.
 func CreateUserFromForm(newUser UserForm) (*User, *Profile) {

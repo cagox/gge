@@ -1,15 +1,12 @@
 {{ define "title"}}Create First User {{end}}
 
-{{ define "header" }}
-  <div class="row header_row"><div class="sixteen columns">&nbsp;</div></div>
-  <div class="row header_row">
-    <div class="five columns">&nbsp;</div>
-    <div class="six columns"><center><h2>Create First Admin User</h2></center></div>
-    <div class="five columns">&nbsp;</div>
-  </div>
-  <div class="row header_row"><div class="sixteen columns">&nbsp;</div></div>
-{{end}}
 
+{{ define "loginform" }} &nbsp; {{end}}
+{{block "pagedescription" .}}
+  <div class="five columns">&nbsp;</div>
+  <div class="six columns"><center><h2>Create First Admin User</h2></center></div>
+  <div class="five columns">&nbsp;</div>
+{{end}}
 
 {{define "content"}}
   {{if .IsTokenSet}}

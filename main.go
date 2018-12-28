@@ -22,7 +22,7 @@ func main() {
   config.Config.Database = database.OpenDatabase(true)
   defer config.Config.Database.Close()
 
-  routes.SetupRoutes()
+  routes.Routes()
 
   fmt.Println("\nDatabase Path: "+config.Config.DatabasePath)
   fmt.Println("Static Path: "+config.Config.StaticPath)

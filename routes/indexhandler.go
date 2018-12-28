@@ -25,10 +25,19 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
   pageData.Flashes = sessionData.GetFlashes(true)
   pageData.Authenticated = sessionData.Authenticated
 
+  currentUser := user.User{}
+  if err := config.Config.Database.Where("id = ?", sessionData.UserID).First(&currentUser).Error; err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+
+  pageData.IsAdmin = currentUser.IsAdmin
+
   t := template.New("base.html")
   t, err := t.ParseFiles(config.Config.TemplateRoot+"/base/base.html", config.Config.TemplateRoot+"/base/index.html")
   if err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
   }
 
   session.Values["sessiondata"] = sessionData

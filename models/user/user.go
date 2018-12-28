@@ -1,15 +1,14 @@
 package user
 
 import (
-  "fmt"
+  //"fmt"
   "time"
   "encoding/gob"
+  "net/http"
 
 
   "github.com/jinzhu/gorm"
 
-  "github.com/cagox/gge/config"
-  "github.com/cagox/gge/crypto"
 
 )
 
@@ -34,52 +33,27 @@ type Profile struct {
   Name         string `gorm:"size:40"`         // The users Display name.
 }
 
-//UserForm is a struct to collect user data for validation.
-type UserForm struct {
+//Form is a struct to collect user data for validation.
+type Form struct {
   Email    string
   Name     string
   Password string
 }
 
+//SafeUser is a version of user that is safe to send to the page.
+type SafeUser struct {
+  UserID  uint
+  IsAdmin bool
+}
+
 func init() {
   gob.Register(User{})
   gob.Register(Profile{})
-  gob.Register(UserForm{})
-}
-
-//GetUsers returns a list of all the users in the database.
-func GetUsers() []User {
-  var users []User
-  if err := config.Config.Database.Find(&users).Error; err != nil {
-    fmt.Println("Could Not Search for Users")
-  }
-
-  return users
-}
-
-//GetUserByEmail returns a user with the matching email.
-func GetUserByEmail(email string) *User {
-  user := &User{}
-  config.Config.Database.Where("email = ?", email).First(&user)
-
-  return user
-}
-
-//SetPassword sets the password on the user object
-func (user *User) SetPassword(password string) {
-  user.Password = crypto.HashPassword(password)
-}
-
-//Authenticate allows the login method to make sure we have the right person.
-func (user *User) Authenticate(password string) bool {
-  return crypto.ComparePassword(password, user.Password)
+  gob.Register(Form{})
 }
 
 
-
-//CreateUserFromForm creates a new user object from the data provided via a UserForm object.
-func CreateUserFromForm(newUser UserForm) (*User, *Profile) {
-  profile := &Profile{Name: newUser.Name}
-  user := &User{Email: newUser.Email, Password: crypto.HashPassword(newUser.Password)}
-  return user, profile
+//Routes sets up routs for package user
+func Routes() {
+  http.HandleFunc("/profile", profileHandler)
 }

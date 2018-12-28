@@ -63,6 +63,7 @@ type BasePageData struct {
   Page          string
   Flashes       []Flash
   Authenticated bool
+  IsAdmin       bool
 }
 
 

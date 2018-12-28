@@ -15,6 +15,9 @@ body {
   background-color: #7aaf90;
 }
 
+.admin_tools_row {
+  background-color: #8888BB;
+}
 .container a:link,
 .header_row a:link {
   color: darkblue;
@@ -60,6 +63,11 @@ body {
   background-color: #f44336;
   color: white;
   margin-bottom: 15px;
+  position: absolute;
+  z-index: 50;
+  top: 4em;
+  right: 50%;
+  left:auto;
 }
 
 .info,

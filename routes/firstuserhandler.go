@@ -62,7 +62,7 @@ func firstUserHandle(w http.ResponseWriter, r *http.Request) {
 
   //If method == POST, we start processing the form.
   r.ParseForm()
-  newUser := user.UserForm{}
+  newUser := user.Form{}
   newUser.Email = r.FormValue("email")
   newUser.Password = r.FormValue("password")
   newUser.Name = r.FormValue("name")
@@ -92,6 +92,7 @@ func firstUserHandle(w http.ResponseWriter, r *http.Request) {
   createdUser, profile := user.CreateUserFromForm(newUser)
 
   createdUser.SetPassword(r.FormValue("password"))
+  createdUser.IsAdmin = true
 
   config.Config.Database.Create(&createdUser)
   profile.UserID = createdUser.ID

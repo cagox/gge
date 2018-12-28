@@ -7,15 +7,16 @@ import (
 
   "github.com/cagox/gge/config"
   //"github.com/cagox/gge/session"
-  //"github.com/cagox/gge/apps/user"
+  "github.com/cagox/gge/models/user"
 
 )
 
-//SetupRoutes sets up the routes for the main package and then calls similar methods in the attached packages.
-func SetupRoutes() {
+//Routes sets up the routes for the main package and then calls similar methods in the attached packages.
+func Routes() {
   //Setup the main routes.
   setupMainRoutes()
   //Setup the routes for the connected packages.
+  user.Routes()
 
 }
 

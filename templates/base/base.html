@@ -15,8 +15,29 @@
           <div class="row header_row">
             {{ block "loginform" . }}
               {{ if .Authenticated }}
-                <div class="fifteen columns"> &nbsp; </div>
-                <div class="one columns"> <a href="/logout">Logout</a> </div>
+                <div class="one columns"> &nbsp;
+                  {{ if eq .Page "Index"}}
+                    Home
+                  {{else}}
+                    <a href="/">Home</a>
+                  {{end}}
+                </div>
+
+                <div class="thirteen columns"> &nbsp; </div>
+
+                <div class="one columns">
+                  {{ if eq .Page "Profile"}}
+                    Profile
+                  {{else}}
+                    <a href="/profile">Profile</a>
+                  {{end}}
+                </div>
+
+                <div class="one columns"><a href="/logout">Logout</a> </div>
+
+
+
+
               {{else}}
                 <div class="six columns">
                   &nbsp;
@@ -36,14 +57,13 @@
           <div class="row header_row">
             {{block "pagedescription" .}}&nbsp;{{end}}
           </div>
-          
+
             <div class="row header_row">
               {{ if .Flashes}}
                 <div class="four columns">&nbsp;</div>
                 <div class="eight columns">
                   <ul>
                     {{range .Flashes}}
-                      <!-- <li class="{{.Class}}">{{.Class}}: &nbsp; {{.Message}}</li> -->
                       <div class="alert {{.Class}}">
                         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
                           {{.Message}}
@@ -64,6 +84,14 @@
               </div>
             </div>
           {{end}}<!-- End Header Block-->
+
+          {{ block "admintools" .}}
+            {{if .IsAdmin}}
+              <div class="row admin_tools_row header_bottom">
+                <div class="sixteen columns">&nbsp;</div>
+              </div>
+            {{end}}
+          {{end}}
 
           {{ block "content" .}}
           <div class="row">

@@ -12,7 +12,7 @@ ValidateUserForm validates the data provided and returns a slice of strings if t
 Its first argument is a filled in UserForm struct. This is the data to be validated/
 Its second argument is a bool value declaring if the form is for a new user rather than just updating a user.
 */
-func ValidateUserForm(newUser UserForm, isNew bool) []string {
+func ValidateUserForm(newUser Form, isNew bool) []string {
   errors := make([]string, 0)
   var users []User
   //Validate Password:

@@ -20,9 +20,9 @@ func init() {
 
   Store = sessions.NewCookieStore(authKeyOne, encryptionKeyOne)
 
-  Store.Options = &sessions.Options{  //Max Age 30 Days. This site is not exactly high risk.
+  Store.Options = &sessions.Options{
     Path:   "/",
-    MaxAge: 3600 * 24 * 30,
+    MaxAge: 3600 * 24 * 30, //Max Age 30 Days. This site is not exactly high risk.
     HttpOnly: true,
   }
 
@@ -44,6 +44,14 @@ type SessionData struct {
 Flash will be used to add flash messages to the session cookie.
 Class indicates the type of message, and will be used for CSS purposes.
 Message is the message itself.
+
+Classes should be of the following values:
+
+error:   An Error messages
+success: Success that warents notification.
+info:    Useful information that might not be overly important.
+Warning: Warning the user that they should procede carefuly.
+
 */
 type Flash struct {
   Class    string

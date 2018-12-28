@@ -39,7 +39,11 @@
                 <div class="eight columns">
                   <ul>
                     {{range .Flashes}}
-                      <li class="{{.Class}}">{{.Class}}: &nbsp; {{.Message}}</li>
+                      <!-- <li class="{{.Class}}">{{.Class}}: &nbsp; {{.Message}}</li> -->
+                      <div class="alert {{.Class}}">
+                        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                          {{.Message}}
+                      </div>
                     {{end}}
                   </ul>
                 </div>

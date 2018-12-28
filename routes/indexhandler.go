@@ -26,7 +26,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
   pageData.Authenticated = sessionData.Authenticated
 
   t := template.New("base.html")
-  t, err := t.ParseFiles(config.Config.TemplateRoot+"/base/base.html")
+  t, err := t.ParseFiles(config.Config.TemplateRoot+"/base/base.html", config.Config.TemplateRoot+"/base/index.html")
   if err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
   }

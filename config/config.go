@@ -26,6 +26,11 @@ type GodGameConfiguration struct {
   MinPasswordLength int
   EncKey            string
   AuthKey           string
+  SMTPServer        string
+  FromAddress       string
+  FromName          string
+  SMTPPassword      string
+  SMTPUserName      string
 
   Database      *gorm.DB  //Not in the Config File.
 }
@@ -53,13 +58,18 @@ func GetConfigs() *GodGameConfiguration {
   file, err := os.Open(configpath+"/gge.json")
 
   //If there is an error (if the file doesn't exist or is malformed) we will created a default  configuration.
-  if err != nil {return defaultConfiguration(configpath)}
+  if err != nil {
+    //return defaultConfiguration(configpath)
+    panic("Configuration File Did Not Open")
+  }
 
   decoder := json.NewDecoder(file)
   err = decoder.Decode(&configuration)
 
-  if err != nil {return defaultConfiguration(configpath)}
-
+  if err != nil {
+    //return defaultConfiguration(configpath)
+    panic("Configuration File Malformed.")
+  }
 
   return &configuration
 }
@@ -87,19 +97,4 @@ func getConfigPath() string {
     configpath = home+"/.config/gge"
   }
   return configpath
-}
-
-func defaultConfiguration(configpath string) *GodGameConfiguration{
-  configuration := GodGameConfiguration{}
-  home, _ := homedir.Dir() //TODO: Add error checking.
-
-  configuration.DatabasePath      = configpath+"/gge.db"
-  configuration.StaticPath        = home+"/go/src/github.com/cagox/gge/static"
-  configuration.DatabaseType      = "sqlite3"
-  configuration.TemplateRoot      = home+"/go/src/github.com/cagox/gge/templates"
-  configuration.AdminToken        = ""
-  configuration.MinimumNameLength = 3
-  configuration.MinPasswordLength = 8
-
-  return &configuration
 }

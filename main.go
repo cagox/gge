@@ -14,7 +14,7 @@ import (
   //Config related imports.
   "github.com/cagox/gge/config"
   "github.com/cagox/gge/routes"
-  "github.com/cagox/gge/email"
+  //"github.com/cagox/gge/email"
   )
 
 
@@ -22,7 +22,7 @@ func main() {
   config.Config.Database = database.OpenDatabase(true)
   defer config.Config.Database.Close()
 
-  email.SystemEmail("burlingk@cagox.net", "Testing my new Function", "\n\nHopefuly it works!\n\n--Ken")
+  //email.SystemEmail("burlingk@cagox.net", "Testing my new Function", "\n\nHopefuly it works!\n\n--Ken")
 
   routes.Routes()
 

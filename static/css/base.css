@@ -13,6 +13,7 @@ body {
 /*header_row will be used for headers and footers.*/
 .header_row {
   background-color: #7aaf90;
+  font-size: 11pt;
 }
 
 .admin_tools_row {

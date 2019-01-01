@@ -7,5 +7,12 @@
 	"AdminToken"		  	: "",
 	"MinimumNameLength" : 3,
 	"MinPasswordLength" : 8,
-	"SessionKey"        : ""
+	"SessionKey"        : "",
+	"AuthKey"           : "64 characters of random gibberish",
+	"EncKey"            : "32 characters of random gibberish",
+	"FromAddress"       : "cagox@cagox.net",
+	"FromName"          : "Cagox Media",
+	"SMTPServer"        : "smt.domain.com:465",
+	"SMTPUserName"      : "probably an email address",
+	"SMTPPassword"       : "password"
 }

@@ -47,5 +47,8 @@ func (user *User) Authenticate(password string) bool {
 func CreateUserFromForm(newUser Form) (*User, *Profile) {
   profile := &Profile{Name: newUser.Name}
   user := &User{Email: newUser.Email, Password: crypto.HashPassword(newUser.Password)}
+
+  profile.ItemsPerPage = 20
+
   return user, profile
 }

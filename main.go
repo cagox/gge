@@ -6,7 +6,7 @@ import (
   "net/http"
 
   //Database Stuff
-  _ "github.com/jinzhu/gorm/dialects/sqlite" //Imports the sqlite3 driver.
+  //_ "github.com/jinzhu/gorm/dialects/sqlite" //Imports the sqlite3 driver.
   "github.com/cagox/gge/database"
 
   //"os"

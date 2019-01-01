@@ -9,6 +9,7 @@ import (
   "encoding/json"
   "github.com/jinzhu/gorm"
   //"github.com/gorilla/sessions"
+  "github.com/gorilla/mux"
 )
 
 //Config holds the system configuration.
@@ -31,6 +32,7 @@ type GodGameConfiguration struct {
   FromName          string
   SMTPPassword      string
   SMTPUserName      string
+  Router            *mux.Router
 
   Database      *gorm.DB  //Not in the Config File.
 }
@@ -45,6 +47,7 @@ func init() {
 func LoadConfiguration() {
   //TODO: Add error handling.
   Config = GetConfigs()
+  Config.Router = mux.NewRouter()
 }
 
 //GetConfigs returns a configuration struct.

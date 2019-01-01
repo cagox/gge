@@ -18,13 +18,15 @@ func Routes() {
   //Setup the routes for the connected packages.
   user.Routes()
 
+  http.Handle("/", config.Config.Router)
+
 }
 
 
 func setupMainRoutes() {
   http.Handle("/static/", http.StripPrefix("/static/",http.FileServer(http.Dir(config.Config.StaticPath))))
-  http.HandleFunc("/", indexHandler)
-  http.HandleFunc("/login", loginHandler)
-  http.HandleFunc("/logout", logoutHandler)
-  http.HandleFunc("/admin/firstuser", firstUserHandle)
+  config.Config.Router.HandleFunc("/", indexHandler)
+  config.Config.Router.HandleFunc("/login", loginHandler)
+  config.Config.Router.HandleFunc("/logout", logoutHandler)
+  config.Config.Router.HandleFunc("/admin/firstuser", firstUserHandle)
 }

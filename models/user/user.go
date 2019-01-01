@@ -4,10 +4,12 @@ import (
   //"fmt"
   "time"
   "encoding/gob"
-  "net/http"
+  //"net/http"
 
 
   "github.com/jinzhu/gorm"
+
+  "github.com/cagox/gge/config"
 
 
 )
@@ -29,8 +31,11 @@ type User struct {
 type Profile struct {
   gorm.Model
 
-  UserID uint
+  UserID       uint
   Name         string `gorm:"size:40"`         // The users Display name.
+
+  //Settings
+  ItemsPerPage int
 }
 
 //Form is a struct to collect user data for validation.
@@ -55,5 +60,5 @@ func init() {
 
 //Routes sets up routs for package user
 func Routes() {
-  http.HandleFunc("/profile", profileHandler)
+  config.Config.Router.HandleFunc("/profile", profileHandler)
 }

@@ -12,23 +12,42 @@ import (
 
 )
 
+
+
+//Data provides information for the SystemEmail function to do it's job.
+type Data struct {
+  To         string
+  Name       string //Optional
+  Subject    string
+  Body       string
+  HTML       bool  //Optional. Defaults to false.
+}
+
+
 //SystemEmail lets the system send an email out to an individual.
-func SystemEmail(sendingTo string, subject string, body string) {
+func SystemEmail(data Data) {
   from := mail.Address{Name: config.Config.FromName, Address: config.Config.FromAddress}
-  to := mail.Address{Address: sendingTo}
-  subj := subject
+  to := mail.Address{Address: data.To}
+  if data.Name != "" {
+    to.Name = data.Name
+  }
+  subj := data.Subject
 
   headers := make(map[string]string)
   headers["From"] = from.String()
   headers["To"] = to.String()
   headers["Subject"] = subj
+  if data.HTML {
+    headers["MIME-version"] = "1.0;\nContent-Type: text/html; charset=\"UTF-8\";\n\n"
+  }
+
 
   // Setup message
   message := ""
   for k,v := range headers {
       message += fmt.Sprintf("%s: %s\r\n", k, v)
   }
-  message += "\r\n" + body
+  message += "\r\n" + data.Body
 
   // Connect to the SMTP Server
   servername := config.Config.SMTPServer
@@ -93,6 +112,9 @@ func SystemEmail(sendingTo string, subject string, body string) {
 /*
 Test tests email.  It is literally a copy and paste of the gist that I got the info from.
 https://gist.github.com/chrisgillis/10888032
+
+I will leave it here, for now, for future reference.
+
 */
 func Test() {
 

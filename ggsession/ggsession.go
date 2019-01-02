@@ -5,7 +5,9 @@ import (
   //"fmt"
 
   "github.com/gorilla/sessions"
+
   "github.com/cagox/gge/config"
+
 )
 
 //Store is the session store.
@@ -30,7 +32,6 @@ func init() {
   gob.Register(SessionData{})
   gob.Register(Flash{})
   gob.Register(BasePageData{})
-
 }
 
 //SessionData is a the struct to move data between the session cookie and the program.
@@ -58,13 +59,8 @@ type Flash struct {
   Message  string
 }
 
-//BasePageData is the data that most pages will need. This can be used to build the data struct for templates.
-type BasePageData struct {
-  Page          string
-  Flashes       []Flash
-  Authenticated bool
-  IsAdmin       bool
-}
+
+
 
 
 //NewSessionData returns a default SessionData struct.
@@ -78,10 +74,11 @@ func GetSessionData(session *sessions.Session) SessionData {
 
   if data != nil {
     if page, ok := data.(SessionData); ok {
-      //The cookie exists but is not ok.
+      //The cookie exists and is ok.
       return page
     }
-    //The cookie exists and is ok.
+
+    //The cookie exists but is not ok.
     return NewSessionData()
   }
   //The cookie doesn't exist.

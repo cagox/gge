@@ -1,4 +1,4 @@
-package user
+package userhandlers
 
 import (
   "net/http"
@@ -6,6 +6,7 @@ import (
 
   "github.com/cagox/gge/ggsession"
   "github.com/cagox/gge/config"
+  "github.com/cagox/gge/models/user"
 )
 
 type profilePageData struct {
@@ -21,7 +22,7 @@ func profileHandler(w http.ResponseWriter, r *http.Request) {
   pageData := profilePageData{}
   pageData.Page = "Profile"
   pageData.Flashes = sessionData.GetFlashes(true)
-  pageData.Authenticated = sessionData.Authenticated
+  pageData.BasicData(sessionData)
 
 
 
@@ -34,22 +35,14 @@ func profileHandler(w http.ResponseWriter, r *http.Request) {
     return
   }
 
-  profile := Profile{}
+  profile := user.Profile{}
   if err := config.Config.Database.Where("user_id = ?", sessionData.UserID).First(&profile).Error; err != nil {
-    http.Error(w, err.Error(), http.StatusInternalServerError)
-    return
-  }
-
-  currentUser := User{}
-  if err := config.Config.Database.Where("id = ?", sessionData.UserID).First(&currentUser).Error; err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
     return
   }
 
 
   pageData.Name = profile.Name
-  pageData.IsAdmin = currentUser.IsAdmin
-
 
   t := template.New("base.html")
   t, err := t.ParseFiles(config.Config.TemplateRoot+"/base/base.html", config.Config.TemplateRoot+"/user/profile.html")

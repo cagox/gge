@@ -5,10 +5,19 @@
 
 <div class="row"> &nbsp; </div>
 
-
 <div class="row">
-  &nbsp;
+  <div class="seven columns">&nbsp;</div>
+  <div class="two columns"><h2>Users</h2></div>
+  <div class="seven columns">&nbsp;</div>
 </div>
+
+{{ range .Profiles }}
+  <div class="row">
+    <div class="one columns">&nbsp;</div>
+    <div class="two columns"> {{.DisplayName}}</div>
+    <div class="thirteen columns">&nbsp;</div>
+  </div>
+{{end}}
 
 
 

@@ -7,7 +7,7 @@ import (
 
   "github.com/cagox/gge/config"
   //"github.com/cagox/gge/session"
-  "github.com/cagox/gge/models/user"
+  "github.com/cagox/gge/models/user/userhandlers"
 
 )
 
@@ -16,7 +16,7 @@ func Routes() {
   //Setup the main routes.
   setupMainRoutes()
   //Setup the routes for the connected packages.
-  user.Routes()
+  userhandlers.Routes()
 
   http.Handle("/", config.Config.Router)
 

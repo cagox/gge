@@ -21,6 +21,8 @@ type GodGameConfiguration struct {
   DatabasePath      string
   StaticPath        string
   DatabaseType      string
+  SQLUserName       string
+  SQLPassword       string
   TemplateRoot      string
   AdminToken        string
   MinimumNameLength int

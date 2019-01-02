@@ -4,14 +4,10 @@ import (
   //"fmt"
   "time"
   "encoding/gob"
+  "strconv"
   //"net/http"
 
-
   "github.com/jinzhu/gorm"
-
-  "github.com/cagox/gge/config"
-
-
 )
 
 //User is the user model
@@ -26,6 +22,7 @@ type User struct {
 
   Profile      Profile
 }
+
 
 //Profile is the model that will hold profile data
 type Profile struct {
@@ -55,10 +52,17 @@ func init() {
   gob.Register(User{})
   gob.Register(Profile{})
   gob.Register(Form{})
+  gob.Register(Invitation{})
 }
 
 
-//Routes sets up routs for package user
-func Routes() {
-  config.Config.Router.HandleFunc("/profile", profileHandler)
+
+/*
+DisplayName returns the Profile object's display name in the format of
+Name#UserID where UserID is the uint associated with the object's UserID.
+*/
+func (profile *Profile) DisplayName() string {
+
+  return profile.Name+"#"+strconv.Itoa(int(profile.UserID))
+
 }

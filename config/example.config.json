@@ -10,9 +10,9 @@
 	"SessionKey"        : "",
 	"AuthKey"           : "64 characters of random gibberish",
 	"EncKey"            : "32 characters of random gibberish",
-	"FromAddress"       : "cagox@cagox.net",
-	"FromName"          : "Cagox Media",
-	"SMTPServer"        : "smt.domain.com:465",
+	"FromAddress"       : "email@address.net",
+	"FromName"          : "Organization Name?",
+	"SMTPServer"        : "smtp.domain.com:465",
 	"SMTPUserName"      : "probably an email address",
 	"SMTPPassword"       : "password"
 }

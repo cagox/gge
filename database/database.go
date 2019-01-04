@@ -2,48 +2,37 @@ package database
 
 
 import (
+  "fmt"
+  "time"
   //Database Stuff
-  "github.com/jinzhu/gorm"
-  _ "github.com/jinzhu/gorm/dialects/sqlite" //Imports the sqlite3 driver.
+  "github.com/globalsign/mgo"
 
   "github.com/cagox/gge/config"
 
-
-  //Models
-  "github.com/cagox/gge/models/user"
-
 )
 
-
-//OpenDatabase opens the database.
-func OpenDatabase(runMigrations bool) (*gorm.DB) {
-  //TODO: Change this to a case switch.
-  //TODO: Figure out the RIGHT way to decide what to pass as aruments and how to pass arguments to Open.
-
-  if config.Config.DatabaseType == "sqlite3" {
-    database := openSQLiteDB(config.Config.DatabasePath)
-
-    if runMigrations {RunMigrations(database)}
-
-    return database
-  }
-
-  return nil
-}
+//DialMongoSession starts the main mongo session.
+func DialMongoSession() {
+  addresses := make([]string, 1)
+  addresses[0] = config.Config.MongoServerURL
+  fmt.Println(addresses)
+  info := mgo.DialInfo{
+    Addrs: addresses,
+    Timeout: 60 * time.Second,
+    Database: "gge",
+    //ReplicaSetName: "godgameengine",     //Will be uncomented, and possibly edited, if I end up using a ReplicaSet
+    //Source: "gge",                       //Defaults to Database (i.e. gge)
+    Username: config.Config.MongoUserName,
+    Password: config.Config.MongoPassword,
+    AppName: "gge"}                        //Not sure if AppName is needed.
 
 
-func openSQLiteDB(databasePath string) (*gorm.DB) {
-  db, err := gorm.Open("sqlite3", databasePath)
+  session, err := mgo.DialWithInfo(&info)
   if err != nil {
-    panic("Database could not be opened.")
+    fmt.Println(err)
+    panic("Could not access the database!")
   }
+  session.SetMode(mgo.Monotonic, true)
 
-  return db
-}
-
-//RunMigrations runs gorms automated migration code.
-func RunMigrations(database *gorm.DB) {
-  //TODO: As I add these make sure that the migrations happen in a logical order. Example: Profile depends on User, so user has to go first.
-  database.AutoMigrate(&user.User{})
-  database.AutoMigrate(&user.Profile{})
+  config.Config.MongoSession = session
 }

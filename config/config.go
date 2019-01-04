@@ -10,6 +10,8 @@ import (
   "github.com/jinzhu/gorm"
   //"github.com/gorilla/sessions"
   "github.com/gorilla/mux"
+
+  "github.com/globalsign/mgo"
 )
 
 //Config holds the system configuration.
@@ -18,11 +20,11 @@ var Config *GodGameConfiguration
 
 //GodGameConfiguration holds the configuration information for the GGE program.
 type GodGameConfiguration struct {
-  DatabasePath      string
   StaticPath        string
-  DatabaseType      string
-  SQLUserName       string
-  SQLPassword       string
+  MongoUserName     string
+  MongoPassword     string
+  MongoServerURL    string
+  MongoSession      *mgo.Session
   TemplateRoot      string
   AdminToken        string
   MinimumNameLength int

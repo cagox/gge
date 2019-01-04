@@ -1,7 +1,7 @@
 package routes
 
 import (
-  //"fmt"
+  "fmt"
   "net/http"
   "html/template"
 
@@ -23,25 +23,18 @@ func firstUserHandle(w http.ResponseWriter, r *http.Request) {
   session := ggsession.GetSession(w, r)
   sessionData := ggsession.GetSessionData(session)
   pageData := firstAdminData{}
+  pageData.BasicData(sessionData)
   pageData.Page="FirstUser"
-  pageData.Flashes = sessionData.GetFlashes(true)
-  pageData.Authenticated = sessionData.Authenticated
   session.Save(r,w)
 
-
-
-
-
   //Make sure the database is actually empty and that they didn't come to this page on accident.
-  users := user.GetUsers();
-  if (len(users) != 0) {
+  if (user.AreThereAnyUsers()) {
     sessionData.AddFlash("error", "The Database is not empty.")
     session.Values["sessiondata"] = sessionData
     session.Save(r,w)
     http.Redirect(w, r, "/", http.StatusSeeOther)
     return
   }
-
 
   t := template.New("base.html")
   t, err := t.ParseFiles(config.Config.TemplateRoot+"/base/base.html", config.Config.TemplateRoot+"/admin/firstadmin.html")
@@ -55,6 +48,9 @@ func firstUserHandle(w http.ResponseWriter, r *http.Request) {
 
 
   if (r.Method == "GET") {
+    pageData.Flashes = sessionData.GetFlashes(true)
+    session.Values["sessiondata"] = sessionData
+    session.Save(r,w)
     t.Execute(w, pageData)
     return
   }
@@ -71,6 +67,7 @@ func firstUserHandle(w http.ResponseWriter, r *http.Request) {
 
   if (adminToken != config.Config.AdminToken) {
     sessionData.AddFlash("error", "Admin Token Does Not Match!")
+    pageData.Flashes = sessionData.GetFlashes(true)
     session.Values["sessiondata"] = sessionData
     session.Save(r,w)
     t.Execute(w, pageData)
@@ -83,20 +80,32 @@ func firstUserHandle(w http.ResponseWriter, r *http.Request) {
     for i := range errors {
       sessionData.AddFlash("error", errors[i])
     }
+    pageData.Flashes = sessionData.GetFlashes(true)
     session.Values["sessiondata"] = sessionData
     session.Save(r,w)
     t.Execute(w, pageData)
     return
   }
 
-  createdUser, profile := user.CreateUserFromForm(newUser)
+  createdUser := user.CreateUserFromForm(newUser)
 
   createdUser.SetPassword(r.FormValue("password"))
   createdUser.IsAdmin = true
 
-  config.Config.Database.Create(&createdUser)
-  profile.UserID = createdUser.ID
-  config.Config.Database.Create(&profile)
+  mongoSession := config.Config.MongoSession.Clone()
+  defer mongoSession.Close()
+  collection :=  mongoSession.DB("gge").C("users")
+
+  err = collection.Insert(&createdUser)
+
+  if err != nil {
+    //TODO: Proper Erorr handling
+    fmt.Println(err)
+  }
+
+  //config.Config.Database.Create(&createdUser)
+  //profile.UserID = createdUser.ID
+  //config.Config.Database.Create(&profile)
 
   sessionData.AddFlash("message", "User Successfully Created")
   session.Values["sessiondata"] = sessionData

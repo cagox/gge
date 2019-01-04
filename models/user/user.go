@@ -4,13 +4,36 @@ import (
   //"fmt"
   "time"
   "encoding/gob"
-  "strconv"
+  //"strconv"
   //"net/http"
 
-  "github.com/jinzhu/gorm"
+  //"github.com/jinzhu/gorm"
+
+  "github.com/globalsign/mgo/bson"
 )
 
 //User is the user model
+type User struct {
+  ID           bson.ObjectId `bson:"_id,omitempty"`
+  Email        string
+  Password     string
+  IsAdmin      bool
+  Timestamp    time.Time
+  LastUpdated  time.Time
+  Profile      Profile
+}
+
+//Profile is the model that will hold profile data
+type Profile struct {
+  Name         string
+
+  //Settings
+  ItemsPerPage int
+}
+
+
+
+/*
 type User struct {
   gorm.Model
   Email        string `gorm:"size:250;unique"` // Email address, also the users login name
@@ -22,9 +45,9 @@ type User struct {
 
   Profile      Profile
 }
+*/
 
-
-//Profile is the model that will hold profile data
+/*
 type Profile struct {
   gorm.Model
 
@@ -34,6 +57,7 @@ type Profile struct {
   //Settings
   ItemsPerPage int
 }
+*/
 
 //Form is a struct to collect user data for validation.
 type Form struct {
@@ -61,8 +85,10 @@ func init() {
 DisplayName returns the Profile object's display name in the format of
 Name#UserID where UserID is the uint associated with the object's UserID.
 */
-func (profile *Profile) DisplayName() string {
+/*
+func (user *User) DisplayName() string {
 
-  return profile.Name+"#"+strconv.Itoa(int(profile.UserID))
+  return user.Profile.Name+"#"+strconv.Itoa(int(user.ID))
 
 }
+*/

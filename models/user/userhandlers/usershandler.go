@@ -1,6 +1,7 @@
 package userhandlers
 
 import (
+  "fmt"
   "net/http"
   "html/template"
 
@@ -12,7 +13,7 @@ import (
 //UsersListData will hold the page data for the user list.
 type usersListData struct {
   ggsession.BasePageData
-  Profiles   []user.Profile
+  Users      []user.User
   PageNum    int
   IsNext     bool
   IsPrevious bool
@@ -41,17 +42,28 @@ func usersHandler(w http.ResponseWriter, r *http.Request) {
     return
   }
 
-  pageData.Flashes = sessionData.GetFlashes(true)
 
-  config.Config.Database.Find(&pageData.Profiles)
+  //config.Config.Database.Find(&pageData.Profiles)
+  mongoSession := config.Config.MongoSession.Clone()
+  defer mongoSession.Close()
+  collection :=  mongoSession.DB("gge").C("users")
+
+
+  err := collection.Find(nil).Sort("profile.name").All(&pageData.Users)
+  if err != nil {
+    fmt.Println(err) //TODO Proper error handling.
+  }
+
+
 
   t := template.New("base.html")
-  t, err := t.ParseFiles(config.Config.TemplateRoot+"/base/base.html", config.Config.TemplateRoot+"/user/users.html")
+  t, err = t.ParseFiles(config.Config.TemplateRoot+"/base/base.html", config.Config.TemplateRoot+"/user/users.html")
   if err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
     return
   }
 
+  pageData.Flashes = sessionData.GetFlashes(true)
   session.Values["sessiondata"] = sessionData
   session.Save(r,w)
   t.Execute(w, pageData)

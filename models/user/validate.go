@@ -14,7 +14,7 @@ Its second argument is a bool value declaring if the form is for a new user rath
 */
 func ValidateUserForm(newUser Form, isNew bool) []string {
   errors := make([]string, 0)
-  var users []User
+
   //Validate Password:
   passwordErrors := ValidatePassword(newUser.Password)
   if passwordErrors != nil {
@@ -31,8 +31,8 @@ func ValidateUserForm(newUser Form, isNew bool) []string {
 
   //Validate Email Address is unique:
   if isNew {
-    config.Config.Database.Where("email = ?", newUser.Email).Find(&users)
-    if (len(users) != 0) {
+    //config.Config.Database.Where("email = ?", newUser.Email).Find(&users)
+    if (!isEmailUnique(newUser.Email)) {
       errors = append(errors, "The email address "+newUser.Email+" already exists.")
     }
   }
@@ -41,8 +41,6 @@ func ValidateUserForm(newUser Form, isNew bool) []string {
   if len(newUser.Name) < config.Config.MinimumNameLength {
     errors = append(errors, "The Display Name must be at least "+strconv.Itoa(config.Config.MinimumNameLength)+" characters long.")
   }
-
-
 
   return errors
 }
@@ -54,4 +52,9 @@ func ValidatePassword(password string) []string {
     errors = append(errors, "The password must be at least "+ strconv.Itoa(config.Config.MinPasswordLength)+" characters.")
   }
   return errors
+}
+
+func isEmailUnique(email string) bool {
+
+  return true
 }

@@ -2,7 +2,7 @@ package ggsession
 import (
   "encoding/gob"
   "net/http"
-  //"fmt"
+  "fmt"
 
   "github.com/gorilla/sessions"
 
@@ -36,7 +36,7 @@ func init() {
 
 //SessionData is a the struct to move data between the session cookie and the program.
 type SessionData struct {
-  UserID        uint
+  Email         string
   Authenticated bool
   Flashes       []Flash
 }
@@ -65,11 +65,13 @@ type Flash struct {
 
 //NewSessionData returns a default SessionData struct.
 func NewSessionData() SessionData {
-  return SessionData{UserID: 0, Authenticated: false}
+  return SessionData{Email: "", Authenticated: false}
 }
 
 //GetSessionData grabs the SessionData struct from the cookie and returns it.
 func GetSessionData(session *sessions.Session) SessionData {
+  fmt.Println("session: ", session)
+
   data := session.Values["sessiondata"]
 
   if data != nil {
@@ -87,15 +89,24 @@ func GetSessionData(session *sessions.Session) SessionData {
 
 //GetSession returns the session with the open cookie file.
 func GetSession(w http.ResponseWriter, r *http.Request) *sessions.Session {
+  fmt.Println("Entering GetSession")
   session, err := Store.Get(r, "gge-cookie")
+  fmt.Println("Session Found: ", session, "\n\n ")
   if err != nil {
-    http.Error(w, err.Error(), http.StatusInternalServerError)
-    return nil
-  }
-  if (session == nil) {
-    session.Values["sessiondata"] = SessionData{UserID: 0, Authenticated: false}
+    fmt.Println("err:", err)
+    fmt.Println("Creating new session.")
+    session.Values["sessiondata"] = SessionData{Email: "", Authenticated: false}
+    session.Save(r,w)
+    fmt.Println("Returning Session: ", session)
     return session
   }
+  if (session == nil) {
+    fmt.Println("session apparently == nil")
+    session.Values["sessiondata"] = SessionData{Email: "", Authenticated: false}
+    session.Save(r,w)
+    return session
+  }
+  fmt.Println("Returning Session: ", session)
   return session
 }
 

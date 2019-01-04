@@ -13,8 +13,7 @@ import (
 func indexHandler(w http.ResponseWriter, r *http.Request) {
   //Test for empty database.
   //If database is Empty, go to Admin User Creation Screen.
-  users := user.GetUsers()
-  if (len(users)==0){
+  if (! user.AreThereAnyUsers()){
     http.Redirect(w, r, "/admin/firstuser", http.StatusSeeOther)
     return
   }
@@ -22,16 +21,8 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
   session := ggsession.GetSession(w, r)
   sessionData := ggsession.GetSessionData(session)
   pageData := ggsession.BasePageData{Page: "Index"}
+  pageData.BasicData(sessionData)
   pageData.Flashes = sessionData.GetFlashes(true)
-  pageData.Authenticated = sessionData.Authenticated
-
-  currentUser := user.User{}
-  if err := config.Config.Database.Where("id = ?", sessionData.UserID).First(&currentUser).Error; err != nil {
-    http.Error(w, err.Error(), http.StatusInternalServerError)
-    return
-  }
-
-  pageData.IsAdmin = currentUser.IsAdmin
 
   t := template.New("base.html")
   t, err := t.ParseFiles(config.Config.TemplateRoot+"/base/base.html", config.Config.TemplateRoot+"/base/index.html")

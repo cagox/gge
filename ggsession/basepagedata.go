@@ -2,8 +2,8 @@ package ggsession
 
 
 import (
-
-  "github.com/cagox/gge/config"
+  "fmt"
+  //"github.com/cagox/gge/config"
   "github.com/cagox/gge/models/user"
 
 
@@ -27,10 +27,11 @@ type BasePageData struct {
 func (data *BasePageData)BasicData(session SessionData) {
   data.Authenticated = session.Authenticated
 
-  user := user.User{}
-  config.Config.Database.Where("id = ?", session.UserID).First(&user)
-  data.IsAdmin = user.IsAdmin
+  fmt.Println("User Authenticated: ", data.Authenticated)
+  if data.Authenticated {
+    user := user.GetUserByEmail(session.Email)
+    //config.Config.Database.Where("id = ?", session.UserID).First(&user)
+    data.IsAdmin = user.IsAdmin
+  }
 
-
-  
 }

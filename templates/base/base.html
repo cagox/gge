@@ -85,7 +85,13 @@
           {{ block "admintools" .}}
             {{if .IsAdmin}}
               <div class="row admin_tools_row header_bottom">
-                <div class="one columns">&nbsp;&nbsp;<a href="/users">Users</a></div>
+                <div class="one columns">&nbsp;&nbsp;
+                  {{ if eq .Page "Users" }}
+                    Users
+                  {{else}}
+                    <a href="/users">Users</a>
+                  {{end}}
+                </div>
                 <div class="fifteen columns">&nbsp;</div>
               </div>
             {{end}}

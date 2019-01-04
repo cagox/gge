@@ -30,7 +30,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
       sessionData.AddFlash("success", "We are logging you in!")
 
       sessionData.Authenticated = true
-      sessionData.UserID = newUser.ID
+      sessionData.Email = newUser.Email
       session.Values["sessiondata"] = sessionData
 
       session.Save(r,w)

@@ -11,10 +11,10 @@
   <div class="seven columns">&nbsp;</div>
 </div>
 
-{{ range .Profiles }}
+{{ range .Users }}
   <div class="row">
     <div class="one columns">&nbsp;</div>
-    <div class="two columns"> {{.DisplayName}}</div>
+    <div class="two columns"> {{.Profile.Name}}</div>
     <div class="thirteen columns">&nbsp;</div>
   </div>
 {{end}}

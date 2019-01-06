@@ -8,4 +8,6 @@ import (
 func Routes() {
   config.Config.Router.HandleFunc("/profile", profileHandler)
   config.Config.Router.HandleFunc("/users", usersHandler)
+  config.Config.Router.HandleFunc("/inviteuser", inviteUserHandler)
+  config.Config.Router.HandleFunc("/users/invite/{token}", acceptInvitationHandler)
 }

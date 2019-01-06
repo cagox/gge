@@ -2,7 +2,7 @@ package database
 
 
 import (
-  "fmt"
+  //"fmt"
   "time"
   //Database Stuff
   "github.com/globalsign/mgo"
@@ -15,7 +15,6 @@ import (
 func DialMongoSession() {
   addresses := make([]string, 1)
   addresses[0] = config.Config.MongoServerURL
-  fmt.Println(addresses)
   info := mgo.DialInfo{
     Addrs: addresses,
     Timeout: 60 * time.Second,
@@ -29,8 +28,7 @@ func DialMongoSession() {
 
   session, err := mgo.DialWithInfo(&info)
   if err != nil {
-    fmt.Println(err)
-    panic("Could not access the database!")
+    panic(err)
   }
   session.SetMode(mgo.Monotonic, true)
 

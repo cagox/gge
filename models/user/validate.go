@@ -32,7 +32,7 @@ func ValidateUserForm(newUser Form, isNew bool) []string {
   //Validate Email Address is unique:
   if isNew {
     //config.Config.Database.Where("email = ?", newUser.Email).Find(&users)
-    if (!isEmailUnique(newUser.Email)) {
+    if (!IsEmailUnique(newUser.Email)) {
       errors = append(errors, "The email address "+newUser.Email+" already exists.")
     }
   }
@@ -52,9 +52,4 @@ func ValidatePassword(password string) []string {
     errors = append(errors, "The password must be at least "+ strconv.Itoa(config.Config.MinPasswordLength)+" characters.")
   }
   return errors
-}
-
-func isEmailUnique(email string) bool {
-
-  return true
 }

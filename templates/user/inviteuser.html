@@ -1,0 +1,27 @@
+{{ define "title"}}Invite A New User{{end}}
+
+
+
+
+{{define "content"}}
+
+<div class="row"><div class="sixteen columns">&nbsp;</div></div>
+<div class="row">
+  <div class="six columns">&nbsp;</div>
+  <div class="four columns">Invite a New User</div>
+  <div class="six columns">&nbsp;</div>
+</div>
+<div class="row"><div class="sixteen columns">&nbsp;</div></div>
+<form action ="/inviteuser" method="POST">
+<div class="row">
+  <div class="three columns">&nbsp;</div>
+  <div class="two columns">Email Address: &nbsp;</div>
+  <div class="three columns"><input type="email" name="email" /></div>
+  <div class="one column"><input type="submit" value="Submit" /></div>
+  <div class="six columns">&nbsp;</div>
+</div>
+</form>
+<div class="row"><div class="sixteen columns">&nbsp;</div></div>
+<div class="row"><div class="sixteen columns">&nbsp;</div></div>
+
+{{end}}

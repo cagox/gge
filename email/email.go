@@ -25,7 +25,7 @@ type Data struct {
 
 
 //SystemEmail lets the system send an email out to an individual.
-func SystemEmail(data Data) {
+func SystemEmail(data Data) error {
   from := mail.Address{Name: config.Config.FromName, Address: config.Config.FromAddress}
   to := mail.Address{Address: data.To}
   if data.Name != "" {
@@ -68,45 +68,48 @@ func SystemEmail(data Data) {
   // from the very beginning (no starttls)
   conn, err := tls.Dial("tcp", servername, tlsconfig)
   if err != nil {
-      log.Panic(err)
+      return err
   }
 
   c, err := smtp.NewClient(conn, host)
   if err != nil {
-      log.Panic(err)
+      return err
   }
 
   // Auth
   if err = c.Auth(auth); err != nil {
-      log.Panic(err)
+      return err
   }
 
   // To && From
   if err = c.Mail(from.Address); err != nil {
-      log.Panic(err)
+      return err
   }
 
   if err = c.Rcpt(to.Address); err != nil {
-      log.Panic(err)
+      return err
   }
 
   // Data
   w, err := c.Data()
   if err != nil {
-      log.Panic(err)
+      return err
   }
 
   _, err = w.Write([]byte(message))
   if err != nil {
-      log.Panic(err)
+      return err
   }
 
   err = w.Close()
   if err != nil {
-      log.Panic(err)
+      return err
   }
 
   c.Quit()
+
+  //fmt.Println(message)
+  return nil
 }
 
 /*

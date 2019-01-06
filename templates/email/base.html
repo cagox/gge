@@ -11,15 +11,15 @@
 
   <body>
     {{ block "header" .}}
-
+      &nbsp;
     {{end}}
 
     {{block "content" .}}
-      {{.Message}}
+      {{.Message}} <p>I really shouldn't be seeing this.</p>
     {{end}}
 
     {{block "footer" .}}
-
+      &nbsp;
     {{end}}
 
 

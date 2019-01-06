@@ -1,14 +1,9 @@
 package routes
 
 import (
-  //"fmt"
   "net/http"
-  //"html/template"
-
   "github.com/cagox/gge/config"
-  //"github.com/cagox/gge/session"
   "github.com/cagox/gge/models/user/userhandlers"
-
 )
 
 //Routes sets up the routes for the main package and then calls similar methods in the attached packages.
@@ -18,6 +13,9 @@ func Routes() {
   //Setup the routes for the connected packages.
   userhandlers.Routes()
 
+
+  //Hand the majority of routing over to mux.
+  // gorilla/mux now handles all of the routing except for /static/
   http.Handle("/", config.Config.Router)
 
 }

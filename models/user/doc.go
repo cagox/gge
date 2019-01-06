@@ -1,4 +1,4 @@
 /*
-Package User holds the models related to users.
+Package user holds the models related to users.
 */
 package user

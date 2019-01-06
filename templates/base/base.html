@@ -92,7 +92,14 @@
                     <a href="/users">Users</a>
                   {{end}}
                 </div>
-                <div class="fifteen columns">&nbsp;</div>
+                <div class="two columns">
+                  {{ if eq .Page "InviteUser"}}
+                    InviteUser
+                  {{else}}
+                    <a href="/inviteuser">InviteUser</a>
+                  {{end}}
+                </div>
+                <div class="thirteen columns">+&nbsp;</div>
               </div>
             {{end}}
           {{end}}

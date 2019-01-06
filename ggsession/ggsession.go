@@ -2,7 +2,7 @@ package ggsession
 import (
   "encoding/gob"
   "net/http"
-  "fmt"
+  //"fmt"
 
   "github.com/gorilla/sessions"
 
@@ -70,7 +70,6 @@ func NewSessionData() SessionData {
 
 //GetSessionData grabs the SessionData struct from the cookie and returns it.
 func GetSessionData(session *sessions.Session) SessionData {
-  fmt.Println("session: ", session)
 
   data := session.Values["sessiondata"]
 
@@ -89,24 +88,20 @@ func GetSessionData(session *sessions.Session) SessionData {
 
 //GetSession returns the session with the open cookie file.
 func GetSession(w http.ResponseWriter, r *http.Request) *sessions.Session {
-  fmt.Println("Entering GetSession")
   session, err := Store.Get(r, "gge-cookie")
-  fmt.Println("Session Found: ", session, "\n\n ")
+
   if err != nil {
-    fmt.Println("err:", err)
-    fmt.Println("Creating new session.")
+    //fmt.Println("err:", err)      //We don't actually care what the errors are, just that they exist.
     session.Values["sessiondata"] = SessionData{Email: "", Authenticated: false}
     session.Save(r,w)
-    fmt.Println("Returning Session: ", session)
     return session
   }
   if (session == nil) {
-    fmt.Println("session apparently == nil")
+    //The session didn't exist.
     session.Values["sessiondata"] = SessionData{Email: "", Authenticated: false}
     session.Save(r,w)
     return session
   }
-  fmt.Println("Returning Session: ", session)
   return session
 }
 

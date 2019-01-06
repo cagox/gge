@@ -48,13 +48,6 @@ func profileHandler(w http.ResponseWriter, r *http.Request) {
   }
 
 
-  /*
-  if err := config.Config.Database.Where("user_id = ?", sessionData.UserID).First(&profile).Error; err != nil {
-    http.Error(w, err.Error(), http.StatusInternalServerError)
-    return
-  }
-*/
-
   pageData.Name = profileUser.Profile.Name
 
   t := template.New("base.html")

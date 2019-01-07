@@ -1,9 +1,74 @@
 {{define "title"}}Welcome New User{{end}}
 
 
-{{define "content"}}
 
-Creating a new user! Yay! &nbsp; &nbsp; {{.Token}}
+{{ block "scripts" .}}
+<script>
+  var check = function() {
+  if (document.getElementById('password').value ==
+    document.getElementById('confirm_password').value) {
+    document.getElementById('message').style.color = 'green';
+    document.getElementById('message').innerHTML = 'matching';
+    document.getElementById("createbutton").disabled = false;
+    document.getElementById("createbutton").style.color = 'green';
+  } else {
+    document.getElementById('message').style.color = 'red';
+    document.getElementById('message').innerHTML = 'not matching';
+    document.getElementById("createbutton").disabled = true;
+    document.getElementById("createbutton").style.color = 'grey';
+  }
+  }
+</script>
+
+{{end}}
+
+
+{{define "content"}}
+<div class="row"><div class="sixteen columns">&nbsp;</div></div>
+<div class="row">
+  <div class="six columns">&nbsp;</div>
+  <div class="four columns">Create a New User Account</div>
+  <div class="six columns">&nbsp;</div>
+</div>
+<div class="row"><div class="sixteen columns">&nbsp;</div></div>
+
+
+
+<form method="post" action="/users/invite/{{.Token}}">
+
+<div class="row">
+  <div class="four columns">&nbsp;</div>
+    <div class="two columns">Email Address:</div><div class="four columns">
+      <input name="email" type="email" value="{{.Email}}" /></div>
+    <div class="six columns"> &nbsp; </div>
+</div>
+<div class="row">
+  <div class="four columns">&nbsp;</div>
+    <div class="two columns">Display Name:</div>
+    <div class="four columns"><input name="name" type="text" /></div>
+    <div class="six columns"> &nbsp; </div>
+</div>
+<div class="row">
+  <div class="four columns">&nbsp;</div>
+    <div class="two columns">Password:</div><div class="four columns">
+      <input name="password" id="password" type="password" onkeyup='check();' /></div>
+    <div class="six columns"> &nbsp; </div>
+</div>
+<div class="row">
+  <div class="three columns">&nbsp;</div>
+    <div class="three columns">Confirm Password:</div><div class="four columns">
+      <input name="confirm_password" id="confirm_password" type="password" onkeyup='check();' /></div>
+    <div class="six columns"> <span id='message'></span> </div>
+</div>
+
+<div class="row">
+  <div class="seven columns"> &nbsp; </div>
+  <div class="three columns" style="padding-left: 2em;">
+    <input type="submit" id="createbutton" disabled="true" value="Create Character"/>
+  </div>
+  <div class="six columns"> &nbsp; </div>
+</div>
+
 
 
 {{end}}

@@ -26,6 +26,16 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 
     r.ParseForm()
     newUser := user.GetUserByEmail(r.FormValue("email"))
+
+    if !user.IsEmailValidated(newUser.Email) {
+      sessionData.Authenticated = false
+      sessionData.AddFlash("error", "Please Validate Your Email.")
+      session.Values["sessiondata"] = sessionData
+      session.Save(r,w)
+      http.Redirect(w, r, "/", http.StatusSeeOther)
+      return
+    }
+
     if (newUser.Authenticate(r.FormValue("password"))) {
       sessionData.AddFlash("success", "We are logging you in!")
 
@@ -45,3 +55,6 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
   http.Redirect(w, r, "/", http.StatusSeeOther)
 
 }
+
+
+//TODO: Add code to redirec users without verified email addresses to a page that will let them resend the verification email.

@@ -60,6 +60,22 @@ func InviteTokenExists(token string) bool {
   return false
 }
 
+//InviteByToken retrieves an invitation from the database matching the given token.
+func InviteByToken(token string) (*Invitation, error) {
+  invitation := Invitation{}
+  mongoSession := config.Config.MongoSession.Clone()
+  defer mongoSession.Close()
+  invitations := mongoSession.DB("gge").C("invitations")
+
+  err := invitations.Find(bson.M{"token": token}).One(&invitation)
+  if err != nil {
+    return nil, err
+  }
+
+  return &invitation, nil
+}
+
+
 //InsertInvitation adds the provided invitation to the database.
 func InsertInvitation(invite Invitation) error {
   mongoSession := config.Config.MongoSession.Clone()
@@ -72,6 +88,19 @@ func InsertInvitation(invite Invitation) error {
   return nil
 }
 
+//RemoveInvitation removes an invitation from the database.
+func RemoveInvitation(token string) error {
+  mongoSession := config.Config.MongoSession.Clone()
+  defer mongoSession.Close()
+  invitations := mongoSession.DB("gge").C("invitations")
+
+  err := invitations.Remove(bson.M{"token": token})
+  if err != nil {
+    return err
+  }
+
+  return nil
+}
 
 
 const (

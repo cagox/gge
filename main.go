@@ -1,7 +1,7 @@
 package main
 
 import (
-  //"fmt"
+  "fmt"
   "log"
   "net/http"
 
@@ -27,9 +27,12 @@ func main() {
 
   routes.Routes()
 
-  //fmt.Println("Static Path: "+config.Config.StaticPath)
-  //fmt.Println("Template Root: "+config.Config.TemplateRoot)
-  //fmt.Println("")
+  fmt.Println("A few vital settings:")
+  fmt.Println("Static Path: "+config.Config.StaticPath)
+  fmt.Println("Template Root: "+config.Config.TemplateRoot)
+  fmt.Println("System Email: "+config.Config.FromName+" <"+config.Config.FromAddress+">")
+  
+  fmt.Println("")
 
   log.Fatal(http.ListenAndServe("localhost:8080", nil))
 

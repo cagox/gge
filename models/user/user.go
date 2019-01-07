@@ -14,13 +14,14 @@ import (
 
 //User is the user model
 type User struct {
-  ID           bson.ObjectId `bson:"_id,omitempty"`
-  Email        string
-  Password     string
-  IsAdmin      bool
-  Timestamp    time.Time
-  LastUpdated  time.Time
-  Profile      Profile
+  ID              bson.ObjectId `bson:"_id,omitempty"`
+  Email           string
+  Password        string
+  IsAdmin         bool
+  EmailIsVerified bool
+  Timestamp       time.Time
+  LastUpdated     time.Time
+  Profile         Profile
 }
 
 //Profile is the model that will hold profile data

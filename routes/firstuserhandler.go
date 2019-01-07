@@ -91,6 +91,7 @@ func firstUserHandle(w http.ResponseWriter, r *http.Request) {
 
   createdUser.SetPassword(r.FormValue("password"))
   createdUser.IsAdmin = true
+  createdUser.EmailIsVerified = true
 
   mongoSession := config.Config.MongoSession.Clone()
   defer mongoSession.Close()

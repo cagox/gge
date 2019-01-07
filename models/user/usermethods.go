@@ -75,9 +75,6 @@ func (user *User) Authenticate(password string) bool {
 func CreateUserFromForm(newUser Form) (*User) {
   profile := Profile{Name: newUser.Name, ItemsPerPage: 20}
   user := &User{Email: newUser.Email, Password: crypto.HashPassword(newUser.Password), Profile: profile}
-
-  //profile.ItemsPerPage = 20
-
   return user
 }
 
@@ -97,4 +94,21 @@ func IsEmailUnique(email string) bool {
     return false
   }
   return true
+}
+
+//IsEmailValidated returns the value of User.IsEmailValidated
+func IsEmailValidated(address string) bool {
+  if IsEmailUnique(address) { //If they are not in the database, no further checks are needed.
+    return false
+  }
+  mongoSession := config.Config.MongoSession.Clone()
+  defer mongoSession.Close()
+  users := mongoSession.DB("gge").C("users")
+  user := User{}
+  err:= users.Find(bson.M{"email": address}).One(&user)
+  if err != nil {
+    fmt.Println(err) //TODO: Proper Error Handling.
+  }
+
+  return user.EmailIsVerified
 }

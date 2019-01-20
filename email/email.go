@@ -1,12 +1,14 @@
 package email
 
 import (
-    "fmt"
-	  "log"
-    "net"
-    "net/mail"
-	  "net/smtp"
-    "crypto/tls"
+    //"fmt"
+	  //"log"
+    //"net"
+    //"net/mail"
+	  //"net/smtp"
+    //"crypto/tls"
+
+    "gopkg.in/mail.v2"
 
     "github.com/cagox/gge/config"
 
@@ -23,6 +25,33 @@ type Data struct {
   HTML       bool  //Optional. Defaults to false.
 }
 
+
+func SystemEmail(data Data) error {
+  m := mail.NewMessage()
+  m.SetHeader("From", config.Config.FromAddress)
+  m.SetHeader("To", data.To)
+  //m.SetAddres("Cc", "some@address.net", "Name")
+  m.SetHeader("Subject", data.Subject)
+  if data.HTML {
+    m.SetBody("text/html", data.Body)
+  } else {
+    m.SetBody("text/plain", data.Body)
+  }
+  //m.Attach("/some/attached/file")
+
+  d := mail.NewDialer(config.Config.SMTPServer, config.Config.SMTPPort, config.Config.SMTPUserName, config.Config.SMTPPassword)
+  d.StartTLSPolicy = mail.MandatoryStartTLS
+
+  //Now send the mail.
+
+  if err := d.DialAndSend(m); err != nil {
+    return err
+  }
+
+  return nil
+}
+
+/*
 
 //SystemEmail lets the system send an email out to an individual.
 func SystemEmail(data Data) error {
@@ -111,6 +140,7 @@ func SystemEmail(data Data) error {
   //fmt.Println(message)
   return nil
 }
+*/
 
 /*
 Test tests email.  It is literally a copy and paste of the gist that I got the info from.
@@ -118,7 +148,8 @@ https://gist.github.com/chrisgillis/10888032
 
 I will leave it here, for now, for future reference.
 
-*/
+
+
 func Test() {
 
     from := mail.Address{Name: "burlingk", Address: "cagox@cagox.net"}
@@ -198,3 +229,5 @@ func Test() {
     c.Quit()
 
 }
+
+*/

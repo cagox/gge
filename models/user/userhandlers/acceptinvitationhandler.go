@@ -45,13 +45,11 @@ func acceptInvitationHandler(w http.ResponseWriter, r *http.Request) {
   }
   pageData.Email = invite.Email
 
-
-  t := template.New("base.html")
-  t, err = t.ParseFiles(config.Config.TemplateRoot+"/base/base.html", config.Config.TemplateRoot+"/user/acceptinvite.html")
-  if err != nil {
-    http.Error(w, err.Error(), http.StatusInternalServerError)
-    return
-  }
+  /*
+    Moved template loading bellow this next section.
+    After all, if method == "POST" and everything works
+    we won't be needing it.
+  */
 
   if r.Method == "POST" {
     userForm := user.Form{}
@@ -60,32 +58,47 @@ func acceptInvitationHandler(w http.ResponseWriter, r *http.Request) {
     userForm.Name = r.FormValue("name")
     userForm.Password = r.FormValue("password")
 
-    newUser := user.CreateUserFromForm(userForm)
-    newUser.EmailIsVerified = true
+    errors := user.ValidateUserForm(userForm, true)
+    if len(errors) > 0 {
+      for _, value :=  range errors {
+        sessionData.AddFlash("error", value)
+      }
 
-    mongoSession := config.Config.MongoSession.Clone()
-    defer mongoSession.Close()
+    } else {
+      newUser := user.CreateUserFromForm(userForm)
+      newUser.EmailIsVerified = true
 
-    users := mongoSession.DB("gge").C("users")
+      mongoSession := config.Config.MongoSession.Clone()
+      defer mongoSession.Close()
 
-    err = users.Insert(&newUser)
-    if err != nil {
-      http.Error(w, err.Error(), http.StatusInternalServerError)
+      users := mongoSession.DB("gge").C("users")
+
+      err = users.Insert(&newUser)
+      if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+      }
+      err = user.RemoveInvitation(pageData.Token)
+      if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+      }
+
+      sessionData.AddFlash("success", "Account created for "+newUser.Email)
+      session.Values["sessiondata"] = sessionData
+      session.Save(r,w)
+      http.Redirect(w, r, "/", http.StatusSeeOther)
       return
-    }
-    err = user.RemoveInvitation(pageData.Token)
-    if err != nil {
-      http.Error(w, err.Error(), http.StatusInternalServerError)
-      return
-    }
+    } //End no validation errors.
 
-    sessionData.AddFlash("success", "Account created for "+newUser.Email)
-    session.Values["sessiondata"] = sessionData
-    session.Save(r,w)
-    http.Redirect(w, r, "/", http.StatusSeeOther)
-    return
+} //end method == POST
+
+t := template.New("base.html")
+t, err = t.ParseFiles(config.Config.TemplateRoot+"/base/base.html", config.Config.TemplateRoot+"/user/acceptinvite.html")
+if err != nil {
+  http.Error(w, err.Error(), http.StatusInternalServerError)
+  return
 }
-
 
   pageData.Flashes = sessionData.GetFlashes(true)
   session.Values["sessiondata"] = sessionData

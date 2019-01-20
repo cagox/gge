@@ -25,6 +25,18 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
   if (r.Method == "POST") {
 
     r.ParseForm()
+    //If the email address is unique, then the user does not exist.
+    if user.IsEmailUnique(r.FormValue("email")) {
+      sessionData.Authenticated = false
+      sessionData.AddFlash("error", "Email or Password did not match.")
+      session.Values["sessiondata"] = sessionData
+      session.Save(r,w)
+      http.Redirect(w, r, "/", http.StatusSeeOther)
+      return
+    }
+
+
+
     newUser := user.GetUserByEmail(r.FormValue("email"))
 
     if !user.IsEmailValidated(newUser.Email) {

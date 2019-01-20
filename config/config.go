@@ -32,6 +32,7 @@ type GodGameConfiguration struct {
   EncKey            string
   AuthKey           string
   SMTPServer        string
+  SMTPPort          int
   FromAddress       string
   FromName          string
   SMTPPassword      string

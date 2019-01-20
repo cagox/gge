@@ -4,6 +4,7 @@ import (
   "net/http"
   "github.com/cagox/gge/config"
   "github.com/cagox/gge/models/user/userhandlers"
+  "github.com/cagox/gge/models/game/gamehandlers"
 )
 
 //Routes sets up the routes for the main package and then calls similar methods in the attached packages.
@@ -12,6 +13,7 @@ func Routes() {
   setupMainRoutes()
   //Setup the routes for the connected packages.
   userhandlers.Routes()
+  gamehandlers.Routes()
 
 
   //Hand the majority of routing over to mux.

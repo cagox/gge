@@ -57,11 +57,5 @@ func generateGameSlug(name string) string {
   }
 
 
-
-
-
-
-
-
   return ""
 }

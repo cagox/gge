@@ -1,18 +1,19 @@
 {
-	"databasePath"      : "/home/USER/.gge/gge.db",
-	"StaticPath"        :   "/home/USER/go/src/github.com/cagox/gge/static",
-	"DatabaseType"      : "sqlite3",
+	"StaticPath"        : "/home/USER/go/src/github.com/cagox/gge/static",
+	"MongoUserName"     : "ggeUser",
+  "MongoPassword"     : "PASSWORD",
+	"MongoServerURL"    : "127.0.0.1:27017",
 	"TemplateRoot"      : "/home/USER/go/src/github.com/cagox/gge/templates",
 	"InviteOnly"        : true,
 	"AdminToken"		  	: "",
 	"MinimumNameLength" : 3,
 	"MinPasswordLength" : 8,
-	"SessionKey"        : "",
 	"AuthKey"           : "64 characters of random gibberish",
 	"EncKey"            : "32 characters of random gibberish",
 	"FromAddress"       : "email@address.net",
 	"FromName"          : "Organization Name?",
-	"SMTPServer"        : "smtp.domain.com:465",
+	"SMTPServer"        : "smtp.domain.com",
+	"SMTPPort"          : 465,
 	"SMTPUserName"      : "probably an email address",
-	"SMTPPassword"       : "password"
+	"SMTPPassword"      : "password"
 }

@@ -1,0 +1,28 @@
+{{ define "title" }}Create New Game{{end}}
+
+{{define "content"}}
+
+  <div class="row"><div class="sixteen columns">&nbsp;</div></div>
+  <form action="/games/create" method="POST">
+  <div class="row">
+    <div class="three columns">&nbsp;</div>
+    <div class="two columns">Game Name:&nbsp; </div>
+    <div class="two columns"><input type="text" name="name" /></div>
+    <div class="nine columns">&nbsp;</div>
+  </div>
+  <div class="row">
+    <div class="three columns">&nbsp;</div>
+    <div class="two columns">Description:</div>
+    <div class="eleven columns">
+      <textarea name="description" cols="45" rows="7">&nbsp;</textarea>
+    </div>
+  </div>
+  <div class="row">
+    <div class="eleven columns">&nbsp;</div>
+    <div class="two columns"><input type="submit" value="Create" /></div>
+  </div>
+  </form>
+  <div class="row"><div class="sixteen columns">&nbsp;</div></div>
+
+
+{{end}}

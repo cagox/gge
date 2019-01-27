@@ -1,0 +1,27 @@
+{{define "title"}}List of Games{{end}}
+
+
+{{define "content"}}
+
+<div class="row"> &nbsp; </div>
+
+<div class="row">
+  <div class="seven columns">&nbsp;</div>
+  <div class="two columns"><h2>Games</h2></div>
+  <div class="seven columns">&nbsp;</div>
+</div>
+
+{{ range .Games }}
+  <div class="row">
+    <div class="one columns">&nbsp;</div>
+    <div class="two columns"> {{.Name}}</div>
+    <div class="thirteen columns">&nbsp;</div>
+  </div>
+{{end}}
+
+
+
+<div class="row"> &nbsp; </div>
+
+
+{{end}}

@@ -1,47 +1,48 @@
-package userhandlers
+package gamehandlers
+
 
 import (
-  "fmt"
   "net/http"
   "html/template"
 
   "github.com/cagox/gge/ggsession"
   "github.com/cagox/gge/config"
-  "github.com/cagox/gge/models/user"
+  "github.com/cagox/gge/models/game"
+
 )
 
-//UsersListData will hold the page data for the user list.
-type usersListData struct {
+type gamesListData struct {
   ggsession.BasePageData
-  Users      []user.User
+  Games      []game.Game
   PageNum    int
   IsNext     bool
   IsPrevious bool
 }
 
-func usersHandler(w http.ResponseWriter, r *http.Request) {
+func gamesHandler(w http.ResponseWriter, r *http.Request) {
   session := ggsession.GetSession(w, r)
   sessionData := ggsession.GetSessionData(session)
-  pageData := usersListData{}
-  pageData.Page = "Users"
+  pageData := gamesListData{}
+  pageData.Page = "Games"
   pageData.BasicData(sessionData)
 
 
   //config.Config.Database.Find(&pageData.Profiles)
   mongoSession := config.Config.MongoSession.Clone()
   defer mongoSession.Close()
-  collection :=  mongoSession.DB("gge").C("users")
+  collection :=  mongoSession.DB("gge").C("games")
 
 
-  err := collection.Find(nil).Sort("profile.name").All(&pageData.Users)
+  err := collection.Find(nil).Sort("game.name").All(&pageData.Games)
   if err != nil {
-    fmt.Println(err) //TODO Proper error handling.
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
   }
 
 
 
   t := template.New("base.html")
-  t, err = t.ParseFiles(config.Config.TemplateRoot+"/base/base.html", config.Config.TemplateRoot+"/user/users.html")
+  t, err = t.ParseFiles(config.Config.TemplateRoot+"/base/base.html", config.Config.TemplateRoot+"/game/games.html")
   if err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
     return

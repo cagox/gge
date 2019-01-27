@@ -5,6 +5,7 @@ import (
   "time"
   "strconv"
   "fmt"
+  "encoding/gob"
 
   "github.com/globalsign/mgo/bson"
   "github.com/tv42/slug"
@@ -58,4 +59,23 @@ func generateGameSlug(name string) string {
 
 
   return ""
+}
+
+func InsertGame(game *Game) error {
+  mongoSession := config.Config.MongoSession.Clone()
+  defer mongoSession.Close()
+  games := mongoSession.DB("gge").C("games")
+  err := games.Insert(&game)
+  if err != nil {
+    return err
+  }
+  return nil
+}
+
+
+
+
+
+func init(){
+  gob.Register(Game{})
 }

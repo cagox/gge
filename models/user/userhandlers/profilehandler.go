@@ -28,7 +28,7 @@ func profileHandler(w http.ResponseWriter, r *http.Request) {
 
 
 
-
+/*
   if !sessionData.Authenticated {
     sessionData.AddFlash("error", "You must be logged in to access your profile.")
     session.Values["sessiondata"] = sessionData
@@ -36,6 +36,7 @@ func profileHandler(w http.ResponseWriter, r *http.Request) {
     http.Redirect(w, r, "/", http.StatusSeeOther)
     return
   }
+  */
 
   profileUser := user.User{}
   mongoSession := config.Config.MongoSession.Clone()

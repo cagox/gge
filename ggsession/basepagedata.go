@@ -2,11 +2,8 @@ package ggsession
 
 
 import (
-  //"fmt"
-  //"github.com/cagox/gge/config"
+
   "github.com/cagox/gge/models/user"
-
-
 
 )
 

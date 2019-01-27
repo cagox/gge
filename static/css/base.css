@@ -19,6 +19,11 @@ body {
 .admin_tools_row {
   background-color: #8888BB;
 }
+
+.user_tools_row {
+  background-color: #66DD66;
+}
+
 .container a:link,
 .header_row a:link {
   color: darkblue;
